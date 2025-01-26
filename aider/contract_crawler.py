@@ -3,6 +3,7 @@ import os
 import sys
 import requests
 from typing import Optional
+from dotenv import load_dotenv
 
 ETHERSCAN_API_URL = "https://api.etherscan.io/api"
 API_KEY_ENV = "ETHERSCAN_API_KEY"
@@ -36,10 +37,11 @@ def main():
         sys.exit(1)
         
     contract_address = sys.argv[1]
+    load_dotenv()
     api_key = os.getenv(API_KEY_ENV)
     
     if not api_key:
-        print(f"Error: Please set {API_KEY_ENV} environment variable")
+        print(f"Error: Please create a .env file with {API_KEY_ENV} variable")
         sys.exit(1)
         
     contract_data = get_contract_source(contract_address, api_key)
