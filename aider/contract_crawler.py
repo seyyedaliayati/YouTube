@@ -70,9 +70,14 @@ def main():
         
         # Save ABI
         abi_file = contracts_dir / f"{contract_address}.json"
-        with open(abi_file, "w") as f:
-            json.dump(contract_data["ABI"], f, indent=2)
-        print(f"Contract ABI saved to {abi_file}")
+        try:
+            abi_json = json.loads(contract_data["ABI"])  # Parse string to JSON
+            with open(abi_file, "w") as f:
+                json.dump(abi_json, f, indent=4)  # Use 4-space indentation
+            print(f"Contract ABI saved to {abi_file}")
+        except json.JSONDecodeError as e:
+            print(f"Error parsing ABI: {e}")
+            sys.exit(1)
         
     except IOError as e:
         print(f"Error saving contract files: {e}")
