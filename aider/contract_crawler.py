@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import json
 import requests
 from typing import Optional
 from dotenv import load_dotenv
@@ -62,11 +63,19 @@ def main():
     # Save source code to file
     output_file = contracts_dir / f"{contract_address}.sol"
     try:
+        # Save source code
         with open(output_file, "w") as f:
             f.write(contract_data["SourceCode"])
         print(f"Contract source code saved to {output_file}")
+        
+        # Save ABI
+        abi_file = contracts_dir / f"{contract_address}.json"
+        with open(abi_file, "w") as f:
+            json.dump(contract_data["ABI"], f, indent=2)
+        print(f"Contract ABI saved to {abi_file}")
+        
     except IOError as e:
-        print(f"Error saving contract source: {e}")
+        print(f"Error saving contract files: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
