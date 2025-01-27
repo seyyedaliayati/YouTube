@@ -4,6 +4,7 @@ import sys
 import requests
 from typing import Optional
 from dotenv import load_dotenv
+from pathlib import Path
 
 ETHERSCAN_API_URL = "https://api.etherscan.io/api"
 API_KEY_ENV = "ETHERSCAN_API_KEY"
@@ -50,11 +51,23 @@ def main():
         print("Failed to fetch contract data")
         sys.exit(1)
         
-    if contract_data["SourceCode"]:
-        print("Contract Source Code:")
-        print(contract_data["SourceCode"])
-    else:
+    if not contract_data["SourceCode"]:
         print("No source code available for this contract")
+        sys.exit(1)
+        
+    # Create contracts directory if it doesn't exist
+    contracts_dir = Path("contracts")
+    contracts_dir.mkdir(exist_ok=True)
+    
+    # Save source code to file
+    output_file = contracts_dir / f"{contract_address}.sol"
+    try:
+        with open(output_file, "w") as f:
+            f.write(contract_data["SourceCode"])
+        print(f"Contract source code saved to {output_file}")
+    except IOError as e:
+        print(f"Error saving contract source: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
