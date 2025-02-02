@@ -52,7 +52,7 @@ def distance_to_segment(P, A, B):
 pygame.init()
 width, height = 600, 600
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Bouncing Ball in Triangle")
+pygame.display.set_caption("Bouncing Ball in Triangle -- DeepSeek R1")
 
 # Triangle vertices
 vertices = [(100, 500), (500, 500), (300, 100)]
